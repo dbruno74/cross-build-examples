@@ -1,0 +1,57 @@
+name: test-confinement
+base: core22
+version: '0.1'
+summary: Demo some confinment bits
+description: |
+  Demo some snap confinement and interface items.
+
+grade: devel
+confinement: strict
+
+architectures:
+   - build-on: amd64
+     build-for: arm64
+
+apps:
+  bash:
+    command: bash
+    plugs:
+      - home
+  vi:
+    command: usr/bin/vim.tiny
+    plugs:
+      - home
+  vim:
+    command: usr/bin/vim.tiny
+    plugs:
+      - home
+
+parts:
+  bash:
+    plugin: autotools
+    after: [prepare-env]
+    source: http://ftp.gnu.org/gnu/bash/bash-4.3.tar.gz
+    autotools-configure-parameters: ["--infodir=/var/bash/info", "--host=aarch64-linux-gnu"]
+    build-packages: [ crossbuild-essential-arm64 ]
+    organize:
+      usr/local/bin/bash: bash
+
+  vim:
+    plugin: nil
+    after: [prepare-env]
+    stage-packages: [ vim-tiny:arm64 ]
+
+  prepare-env:
+    plugin: nil
+    build-packages: [software-properties-common]
+    override-pull: |
+      add-apt-repository "deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports jammy main restricted"
+      add-apt-repository "deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports jammy-updates main restricted"
+      add-apt-repository "deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports jammy universe"
+      add-apt-repository "deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports jammy-updates universe"
+      add-apt-repository "deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports jammy multiverse"
+      add-apt-repository "deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports jammy-updates multiverse"
+      add-apt-repository "deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports jammy-backports main restricted universe multiverse"
+      add-apt-repository "deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports jammy-security main restricted"
+      add-apt-repository "deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports jammy-security universe"
+      add-apt-repository "deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports jammy-security multiverse"
