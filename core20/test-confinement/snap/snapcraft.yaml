@@ -32,14 +32,18 @@ parts:
     after: [prepare-env]
     source: http://ftp.gnu.org/gnu/bash/bash-4.3.tar.gz
     autotools-configure-parameters: ["--infodir=/var/bash/info", "--host=aarch64-linux-gnu"]
-    build-packages: [ crossbuild-essential-arm64 ]
+    build-packages: 
+      - on amd64 to arm64:
+        - crossbuild-essential-arm64
     organize:
       usr/local/bin/bash: bash
 
   vim:
     plugin: nil
     after: [prepare-env]
-    stage-packages: [ vim-tiny:arm64 ]
+    stage-packages: 
+      - on amd64 to arm64:
+        - vim-tiny:arm64
 
   prepare-env:
     plugin: nil
