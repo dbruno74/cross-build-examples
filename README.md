@@ -17,6 +17,8 @@ cd core20
 lxc file push test-confinement snapcraft-focal/root -p -r
 lxc exec snapcraft-focal bash
 cd test-confinement
+apt update && apt upgrade
+snap install snapcraft --classic
 snapcraft --destructive-mode --target-arch=arm64 --enable-experimental-target-arch
 ```
 ### core22
