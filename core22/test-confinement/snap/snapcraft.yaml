@@ -47,6 +47,7 @@ parts:
 
   prepare-env:
     plugin: nil
+    build-packages: [software-properties-common]
     override-pull: |
       add-apt-repository "deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports jammy main restricted"
       add-apt-repository "deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports jammy-updates main restricted"
